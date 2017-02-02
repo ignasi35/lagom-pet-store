@@ -14,7 +14,8 @@ lazy val pet = (project in file("pet"))
   .settings(commonSettings: _*)
   .enablePlugins(LagomJava)
   .settings(
-    version := "1.0-SNAPSHOT"
+    version := "1.0-SNAPSHOT",
+    libraryDependencies += filters
   )
   .settings(lagomForkedTestSettings: _*)
 
