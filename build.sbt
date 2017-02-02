@@ -7,7 +7,7 @@ EclipseKeys.projectFlavor in Global := EclipseProjectFlavor.Java
 
 lazy val root = (project in file("."))
   .settings(name := "pet-store")
-  .aggregate(pet)
+  .aggregate(pet, web)
   .settings(commonSettings: _*)
 
 lazy val pet = (project in file("pet"))
@@ -17,6 +17,13 @@ lazy val pet = (project in file("pet"))
     version := "1.0-SNAPSHOT"
   )
   .settings(lagomForkedTestSettings: _*)
+
+lazy val web = (project in file("web"))
+  .settings(commonSettings: _*)
+  .enablePlugins(PlayJava && LagomPlay && LagomOpenApiPlugin)
+  .settings(
+    version := "1.0-SNAPSHOT"
+  )
 
 def commonSettings: Seq[Setting[_]] = eclipseSettings ++ Seq(
   javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation", "-parameters")
