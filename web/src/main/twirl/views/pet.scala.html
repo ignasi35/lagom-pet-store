@@ -11,10 +11,12 @@
     <body>
         <h1>Pet @pet.getName</h1>
 
-        @for(category <- pet.getCategory.asScala) {
-            <h3>Category</h3>
-            <p>@category.getName.asScala</p>
+        <h3>Tags</h3>
+        <ul>
+        @for(tag <- pet.getTags.asScala) {
+            <li>@tag.getName.asScala</li>
         }
+        </ul>
 
         <h3>Photos</h3>
         @for(photoUrl <- pet.getPhotoUrls.asScala) {
@@ -23,11 +25,5 @@
             </div>
         }
 
-        <h3>Tags</h3>
-        <ul>
-        @for(tag <- pet.getTags.asScala) {
-            <li>@tag.getName.asScala</li>
-        }
-        </ul>
     </body>
 </html>
