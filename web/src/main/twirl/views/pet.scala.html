@@ -1,0 +1,33 @@
+@import com.example.pet.api.Pet
+@import scala.compat.java8.OptionConverters._
+@import scala.collection.JavaConverters._
+@(pet: Pet)
+
+<html>
+    <head>
+        <title>Pet @pet.getName</title>
+    </head>
+
+    <body>
+        <h1>Pet @pet.getName</h1>
+
+        @for(category <- pet.getCategory.asScala) {
+            <h3>Category</h3>
+            <p>@category.getName.asScala</p>
+        }
+
+        <h3>Photos</h3>
+        @for(photoUrl <- pet.getPhotoUrls.asScala) {
+            <div>
+                <img src="@photoUrl"/>
+            </div>
+        }
+
+        <h3>Tags</h3>
+        <ul>
+        @for(tag <- pet.getTags.asScala) {
+            <li>@tag.getName.asScala</li>
+        }
+        </ul>
+    </body>
+</html>

@@ -9,8 +9,9 @@ import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
 public class PetModule extends AbstractModule implements ServiceGuiceSupport {
     @Override
     protected void configure() {
-        bindServices(serviceBinding(PetApi.class, PetApiImpl.class));
-        bindServices(serviceBinding(StoreApi.class, StoreApiImpl.class));
-        bindServices(serviceBinding(UserApi.class, UserApiImpl.class));
+        bindServices(serviceBinding(PetApi.class, PetApiImpl.class),
+                serviceBinding(StoreApi.class, StoreApiImpl.class),
+                serviceBinding(UserApi.class, UserApiImpl.class)
+        );
     }
 }

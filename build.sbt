@@ -21,8 +21,12 @@ lazy val pet = (project in file("pet"))
 lazy val web = (project in file("web"))
   .settings(commonSettings: _*)
   .enablePlugins(PlayJava && LagomPlay && LagomOpenApiPlugin)
+  .disablePlugins(PlayLayoutPlugin)
   .settings(
-    version := "1.0-SNAPSHOT"
+    version := "1.0-SNAPSHOT",
+    libraryDependencies ++= Seq(
+      lagomJavadslClient
+    )
   )
 
 def commonSettings: Seq[Setting[_]] = eclipseSettings ++ Seq(

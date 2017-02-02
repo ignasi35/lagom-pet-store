@@ -1,0 +1,1 @@
+GET /web/pet/:id    controllers.MainController.showPet(id: Long)
