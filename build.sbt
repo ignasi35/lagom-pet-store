@@ -33,3 +33,6 @@ lazy val web = (project in file("web"))
 def commonSettings: Seq[Setting[_]] = eclipseSettings ++ Seq(
   javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation", "-parameters")
 )
+
+lagomCassandraEnabled in ThisBuild := false
+lagomKafkaEnabled in ThisBuild := false
