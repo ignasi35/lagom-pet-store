@@ -1,4 +1,4 @@
-organization in ThisBuild := "com.example"
+organization in ThisBuild := "com.example.pet"
 
 // the Scala version that will be used for cross-compiled libraries
 scalaVersion in ThisBuild := "2.11.8"

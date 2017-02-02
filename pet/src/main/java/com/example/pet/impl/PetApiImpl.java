@@ -1,11 +1,13 @@
 package com.example.pet.impl;
 
-import akka.NotUsed;
 import com.example.pet.api.*;
+import akka.NotUsed;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 import org.pcollections.*;
 
 import javax.inject.Singleton;
+
+import java.util.Optional;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
@@ -57,6 +59,6 @@ public class PetApiImpl implements PetApi {
     @Override
     public ServiceCall<NotUsed, ModelApiResponse> uploadFile(long petId) {
         System.out.println("uploadFile");
-        return notUsed -> completedFuture(ModelApiResponse);
+        return notUsed -> completedFuture(new ModelApiResponse(Optional.empty(), Optional.empty(), Optional.empty()));
     }
 }

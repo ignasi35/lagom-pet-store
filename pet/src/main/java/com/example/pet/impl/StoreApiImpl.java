@@ -23,7 +23,7 @@ public class StoreApiImpl implements StoreApi {
     @Override
     public ServiceCall<NotUsed, PMap<String, Integer>> getInventory() {
         System.out.println("getInventory");
-        return notUsed -> completedFuture( HashTreePMap.empty());
+        return notUsed -> completedFuture(HashTreePMap.empty());
     }
 
     @Override
