@@ -29,12 +29,28 @@ public class PetApiImpl implements PetApi {
 
     @Override
     public ServiceCall<NotUsed, PSequence<Pet>> findPetsByStatus(PSequence<String> status) {
-        return notUsed -> completedFuture(pets);
+        return notUsed -> {
+            return CompletableFuture.completedFuture(TreePVector.from(
+                    pets
+                            .stream()
+                            .filter(pet -> pet.getStatus().isPresent() && status.contains(pet.getStatus().get().name()))
+                            .collect(Collectors.toList())
+            ));
+        };
     }
 
     @Override
     public ServiceCall<NotUsed, PSequence<Pet>> findPetsByTags(PSequence<String> tags) {
-        return notUsed -> completedFuture(pets);
+        return notUsed -> {
+            List<Pet> thePets = pets
+                    .stream()
+                    .filter(pet -> pet.getTags().stream().filter(tag -> tag.getName().map(n -> tags.contains(n)).orElse(false)).collect(Collectors.toList()).size() > 0)
+                    .collect(Collectors.toList());
+            if (thePets.size() == 0)
+                throw new NotFound("No pet found for provided tags.");
+            else
+                return CompletableFuture.completedFuture(TreePVector.from(thePets));
+        };
     }
 
     @Override
@@ -42,9 +58,9 @@ public class PetApiImpl implements PetApi {
         return notUsed -> {
             List<Pet> thePet = pets
                     .stream()
-                    .filter(pet -> pet.getId().isPresent() && pet.getId().get().longValue() == petId)
+                    .filter(pet -> pet.getId().map(id -> id.equals(petId)).orElse(false))
                     .collect(Collectors.toList());
-            if(thePet.size() == 0)
+            if (thePet.size() == 0)
                 throw new NotFound("Pet not found");
             else
                 return CompletableFuture.completedFuture(thePet.get(0));
