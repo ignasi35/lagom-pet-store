@@ -1,1 +1,2 @@
 GET /web/pet/:id    controllers.MainController.showPet(id: Long)
+GET /web/pet        controllers.MainController.petsByStatus(status: Option[String])

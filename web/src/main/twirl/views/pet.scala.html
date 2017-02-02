@@ -9,6 +9,10 @@
     </head>
 
     <body>
+        <div>
+            <a href="@routes.MainController.petsByStatus(None)">Index</a>
+        </div>
+
         <h1>Pet @pet.getName</h1>
 
         <h3>Tags</h3>
@@ -17,6 +21,11 @@
             <li>@tag.getName.asScala</li>
         }
         </ul>
+
+        <h3>Status</h3>
+        @for(status <- pet.getStatus.asScala) {
+            <p>@status.name</p>
+        }
 
         <h3>Photos</h3>
         @for(photoUrl <- pet.getPhotoUrls.asScala) {

@@ -1,0 +1,29 @@
+@import com.example.pet.api.Pet
+@import scala.compat.java8.OptionConverters._
+@import scala.collection.JavaConverters._
+@import org.pcollections.PSequence
+@(pets: PSequence[Pet])
+
+<html>
+    <head>
+        <title>Pets</title>
+    </head>
+
+    <body>
+        <h1>Pets</h1>
+
+        <h3>View pets with status:</h3>
+        <ul>
+        @for(status <- Pet.StatusEnum.values) {
+            <li><a href="@routes.MainController.petsByStatus(Some(status.getValue))">@status.getValue</a></li>
+        }
+        </ul>
+
+        <dl>
+        @for(pet <- pets.asScala) {
+            <dt>Pet:</dt>
+            <dd><a href="@routes.MainController.showPet(pet.getId.get)">@pet.getName</a></dd>
+        }
+        </dl>
+    </body>
+</html>
