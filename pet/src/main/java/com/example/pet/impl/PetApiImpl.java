@@ -30,12 +30,14 @@ public class PetApiImpl implements PetApi {
     @Override
     public ServiceCall<NotUsed, PSequence<Pet>> findPetsByStatus(PSequence<String> status) {
         return notUsed -> {
-            return CompletableFuture.completedFuture(TreePVector.from(
-                    pets
-                            .stream()
-                            .filter(pet -> pet.getStatus().isPresent() && status.contains(pet.getStatus().get().name()))
-                            .collect(Collectors.toList())
-            ));
+            List<Pet> thePets = pets
+                    .stream()
+                    .filter(pet -> pet.getStatus().isPresent() && status.contains(pet.getStatus().get().name().toLowerCase()))
+                    .collect(Collectors.toList());
+            if(thePets.size() == 0)
+                throw new NotFound("No pet found for provided status.");
+            else
+                return CompletableFuture.completedFuture(TreePVector.from(thePets));
         };
     }
 
