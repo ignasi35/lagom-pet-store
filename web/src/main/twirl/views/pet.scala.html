@@ -9,11 +9,20 @@
     </head>
 
     <body>
+        <div>
+            <a href="@routes.MainController.petsByStatus(None)">Index</a>
+        </div>
+
         <h1>Pet @pet.getName</h1>
 
         @for(category <- pet.getCategory.asScala) {
             <h3>Category</h3>
             <p>@category.getName.asScala</p>
+        }
+
+        <h3>Status</h3>
+        @for(status <- pet.getStatus.asScala) {
+            <p>@status.name</p>
         }
 
         <h3>Photos</h3>
