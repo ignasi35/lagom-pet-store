@@ -14,21 +14,21 @@ public class TestData {
             some(new Long(1l)),
             some(category),
             "horse",
-            TreePVector.empty(),
+            TreePVector.<String>empty().plus("https://www.scienceabc.com/wp-content/uploads/2016/05/horse-running.jpg"),
             TreePVector.empty(),
             some(Pet.StatusEnum.AVAILABLE));
     public static Pet petDog = new Pet(
             some(new Long(2l)),
             some(category),
             "dog",
-            TreePVector.empty(),
+            TreePVector.<String>empty().plus("https://sites.psu.edu/siowfa16/files/2016/10/dog3-17woz29.jpg"),
             TreePVector.empty(),
             some(Pet.StatusEnum.PENDING));
     public static Pet petCat = new Pet(
             some(new Long(3l)),
             some(category),
             "cat",
-            TreePVector.empty(),
+            TreePVector.<String>empty().plus("https://scontent.cdninstagram.com/t51.2885-15/e35/15802625_1799473900326589_5948450424158683136_n.jpg?ig_cache_key=MTQxNzg5OTU0NDcyNDc3ODc0Mg%3D%3D.2"),
             TreePVector.empty(),
             some(Pet.StatusEnum.SOLD));
 
