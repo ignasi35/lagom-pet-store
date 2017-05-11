@@ -1,38 +1,42 @@
 package com.example.pet.impl;
 
-import com.example.pet.api.*;
+import akka.Done;
 import akka.NotUsed;
+import com.example.pet.Pet;
+import com.example.pet.PetStatusEnum;
+import com.example.pet.PetserviceApi;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.api.transport.NotFound;
-import org.pcollections.*;
+import org.pcollections.PSequence;
+import org.pcollections.TreePVector;
 
 import javax.inject.Singleton;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static com.example.pet.impl.TestData.modelApiResponse;
+import static com.example.pet.impl.TestData.pets;
 import static java.util.concurrent.CompletableFuture.completedFuture;
-import static com.example.pet.impl.TestData.*;
 
 @Singleton
-public class PetApiImpl implements PetApi {
+public class PetserviceImpl implements PetserviceApi {
 
-    public ServiceCall<Pet, NotUsed> addPet() {
-        return pet -> completedFuture(NotUsed.getInstance());
+    public ServiceCall<Pet, Done> addPet() {
+        return pet -> completedFuture(Done.getInstance());
     }
 
     @Override
-    public ServiceCall<NotUsed, NotUsed> deletePet(long petId) {
-        return notUsed -> completedFuture(NotUsed.getInstance());
+    public ServiceCall<NotUsed, Done> deletePet(long petId) {
+        return notUsed -> completedFuture(Done.getInstance());
     }
 
     @Override
-    public ServiceCall<NotUsed, PSequence<Pet>> findPetsByStatus(PSequence<String> status) {
+    public ServiceCall<NotUsed, PSequence<Pet>> findPetsByStatus(PSequence<PetStatusEnum> status) {
         return notUsed -> {
             List<Pet> thePets = pets
                     .stream()
-                    .filter(pet -> pet.getStatus().isPresent() && status.contains(pet.getStatus().get().name().toLowerCase()))
+                    .filter(pet -> pet.getPetStatus().isPresent() && status.contains(pet.getPetStatus().get().name().toLowerCase()))
                     .collect(Collectors.toList());
             if(thePets.size() == 0)
                 throw new NotFound("No pet found for provided status.");
@@ -41,12 +45,13 @@ public class PetApiImpl implements PetApi {
         };
     }
 
+
     @Override
     public ServiceCall<NotUsed, PSequence<Pet>> findPetsByTags(PSequence<String> tags) {
         return notUsed -> {
             List<Pet> thePets = pets
                     .stream()
-                    .filter(pet -> pet.getTags().stream().filter(tag -> tag.getName().map(n -> tags.contains(n)).orElse(false)).collect(Collectors.toList()).size() > 0)
+                    .filter(pet -> pet.getTags().stream().filter(tag -> tags.contains(tag.getName())).collect(Collectors.toList()).size() > 0)
                     .collect(Collectors.toList());
             if (thePets.size() == 0)
                 throw new NotFound("No pet found for provided tags.");
@@ -70,17 +75,14 @@ public class PetApiImpl implements PetApi {
     }
 
     @Override
-    public ServiceCall<Pet, NotUsed> updatePet() {
-        return pet -> completedFuture(NotUsed.getInstance());
+    public ServiceCall<Pet, Done> updatePet() {
+        return pet -> completedFuture(Done.getInstance());
     }
 
     @Override
-    public ServiceCall<NotUsed, NotUsed> updatePetWithForm(long petId) {
-        return pet -> completedFuture(NotUsed.getInstance());
+    public ServiceCall<NotUsed, Done> updatePetWithForm(long petId) {
+        return pet -> completedFuture(Done.getInstance());
     }
 
-    @Override
-    public ServiceCall<NotUsed, ModelApiResponse> uploadFile(long petId) {
-        return notUsed -> completedFuture(modelApiResponse);
-    }
+
 }

@@ -1,4 +1,4 @@
-@import com.example.pet.api.Pet
+@import com.example.pet.Pet
 @import scala.compat.java8.OptionConverters._
 @import scala.collection.JavaConverters._
 @(pet: Pet)
@@ -18,12 +18,12 @@
         <h3>Tags</h3>
         <ul>
         @for(tag <- pet.getTags.asScala) {
-            <li>@tag.getName.asScala</li>
+            <li>@tag.getName</li>
         }
         </ul>
 
         <h3>Status</h3>
-        @for(status <- pet.getStatus.asScala) {
+        @for(status <- pet.getPetStatus.asScala) {
             <p>@status.name</p>
         }
 

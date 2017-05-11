@@ -3,21 +3,33 @@ organization in ThisBuild := "com.example.pet"
 // the Scala version that will be used for cross-compiled libraries
 scalaVersion in ThisBuild := "2.11.8"
 
-EclipseKeys.projectFlavor in Global := EclipseProjectFlavor.Java
-
 lazy val root = (project in file("."))
   .settings(name := "pet-store")
-  .aggregate(pet, web)
+  .aggregate(petService,
+//    storeService,
+    web)
   .settings(commonSettings: _*)
 
-lazy val pet = (project in file("pet"))
+lazy val petService = (project in file("petService"))
   .settings(commonSettings: _*)
-  .enablePlugins(LagomJava)
+  .enablePlugins(LagomJava && LagomOpenApiPlugin)
   .settings(
     version := "1.0-SNAPSHOT",
-    libraryDependencies += filters
+    libraryDependencies ++=
+      Seq(
+        lagomJavadslApi,
+        lagomJavadslJackson,
+        filters
+      )
   )
-  .settings(lagomForkedTestSettings: _*)
+
+
+lazy val storeService = (project in file("storeService"))
+  .settings(commonSettings: _*)
+  .enablePlugins(LagomScala && LagomOpenApiPlugin)
+  .settings(
+    version := "1.0-SNAPSHOT"
+  )
 
 lazy val web = (project in file("web"))
   .settings(commonSettings: _*)
@@ -30,8 +42,8 @@ lazy val web = (project in file("web"))
     )
   )
 
-def commonSettings: Seq[Setting[_]] = eclipseSettings ++ Seq(
-  javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation", "-parameters")
+def commonSettings: Seq[Setting[_]] = Seq(
+  javacOptions in compile += "-parameters"
 )
 
 lagomCassandraEnabled in ThisBuild := false

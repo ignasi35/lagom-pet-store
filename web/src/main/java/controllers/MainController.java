@@ -1,6 +1,7 @@
 package controllers;
 
-import com.example.pet.api.PetApi;
+import com.example.pet.PetStatusEnum;
+import com.example.pet.PetserviceApi;
 import com.lightbend.lagom.javadsl.api.transport.NotFound;
 import org.pcollections.TreePVector;
 import play.mvc.Controller;
@@ -8,17 +9,19 @@ import play.mvc.Result;
 import scala.Option;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import scala.compat.java8.OptionConverters.*;
 
 public class MainController extends Controller {
 
-    private final PetApi petApi;
+    private final PetserviceApi petApi;
 
     @Inject
-    public MainController(PetApi petApi) {
+    public MainController(PetserviceApi petApi) {
         this.petApi = petApi;
     }
 
@@ -39,7 +42,8 @@ public class MainController extends Controller {
         if (status.isEmpty()) {
             return CompletableFuture.completedFuture(ok(views.html.pets.render(TreePVector.empty())));
         } else {
-            return petApi.findPetsByStatus(TreePVector.singleton(status.get())).invoke().thenApply(pets ->
+            Optional<String> jStatus = Optional.ofNullable(status.getOrElse(null));
+            return petApi.findPetsByStatus(TreePVector.singleton(jStatus.map(PetStatusEnum::valueOf).get())).invoke().thenApply(pets ->
                     ok(views.html.pets.render(pets))
             );
         }
